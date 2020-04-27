@@ -49,35 +49,37 @@ const Dashboard: React.FC = () => {
     <>
       <Header />
       <Container>
-        <CardContainer>
-          <Card>
-            <header>
-              <p>Entradas</p>
-              <img src={income} alt="Income" />
-            </header>
-            <h1 data-testid="balance-income">
-              {formatValue(Number(balance.income))}
-            </h1>
-          </Card>
-          <Card>
-            <header>
-              <p>Saídas</p>
-              <img src={outcome} alt="Outcome" />
-            </header>
-            <h1 data-testid="balance-outcome">
-              {formatValue(Number(balance.outcome))}
-            </h1>
-          </Card>
-          <Card total>
-            <header>
-              <p>Total</p>
-              <img src={total} alt="Total" />
-            </header>
-            <h1 data-testid="balance-total">
-              {formatValue(Number(balance.total))}
-            </h1>
-          </Card>
-        </CardContainer>
+        {balance && (
+          <CardContainer>
+            <Card>
+              <header>
+                <p>Entradas</p>
+                <img src={income} alt="Income" />
+              </header>
+              <h1 data-testid="balance-income">
+                {formatValue(Number.parseFloat(balance.income))}
+              </h1>
+            </Card>
+            <Card>
+              <header>
+                <p>Saídas</p>
+                <img src={outcome} alt="Outcome" />
+              </header>
+              <h1 data-testid="balance-outcome">
+                {formatValue(Number.parseFloat(balance.outcome))}
+              </h1>
+            </Card>
+            <Card total>
+              <header>
+                <p>Total</p>
+                <img src={total} alt="Total" />
+              </header>
+              <h1 data-testid="balance-total">
+                {formatValue(Number.parseFloat(balance.total))}
+              </h1>
+            </Card>
+          </CardContainer>
+        )}
 
         <TableContainer>
           <table>
@@ -97,10 +99,12 @@ const Dashboard: React.FC = () => {
                   <td className={transaction.type}>
                     {transaction.type === 'outcome'
                       ? `- ${formatValue(transaction.value)}`
-                      : `${formatValue(transaction.value)}`}
+                      : formatValue(transaction.value)}
                   </td>
                   <td>{transaction.category.title}</td>
-                  <td>{transaction.created_at}</td>
+                  <td>
+                    {format(new Date(transaction.created_at), 'dd/MM/yyyy')}
+                  </td>
                 </tr>
               ))}
             </tbody>
